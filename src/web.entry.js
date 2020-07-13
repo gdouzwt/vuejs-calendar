@@ -1,24 +1,15 @@
-import Vue from 'vue'
-import './style.scss'
-import App from './components/App.vue'
+import './style.scss';
+import moment from "moment-timezone";
 
-import moment from 'moment-timezone';
-
-moment.tz.setDefault('Asia/Shanghai');
-moment.locale(navigator.language)
-
-Object.defineProperty(Vue.prototype, '$moment', {
-    get() {
-        return this.$root.moment
+let events = window.__INITIAL_STATE__.map(event => {
+    return {
+        description: event.description,
+        date: moment(event.date)
     }
 });
 
-new Vue({
-    el: '#app',
-    data: {
-        moment
-    },
-    components: {
-        App
-    }
-});
+import VueCalendar from './entry'
+
+setTimeout(function () {
+    VueCalendar(events).$mount('#app');
+}, 2000);

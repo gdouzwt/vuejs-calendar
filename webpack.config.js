@@ -40,7 +40,8 @@ var baseConfig = {
                 loader: 'file-loader',
                 options: {
                     name: '[name].[ext]?[hash]',
-                    // publicPath: '/'
+                    // 重要, 参考 https://stackoverflow.com/questions/59070216/webpack-file-loader-outputs-object-module
+                    esModule: false
                 }
             },
             {
@@ -149,7 +150,7 @@ let targets = ['web', 'node'].map((target) => {
                     }),
                     new VueLoaderPlugin(),
                 ]
-            : []
+            : [new VueLoaderPlugin()]
         ,
         devtool: target === 'web'
             ? process.env.NODE_ENV === 'development'

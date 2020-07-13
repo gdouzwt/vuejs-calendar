@@ -1,8 +1,5 @@
-import Vue from 'vue'
+import VueCalendar from './entry';
 
-new Vue({
-  el: '#app',
-  data: {
-    msg: 'Hello World'
-  }
-});
+export default function (context) {
+    return VueCalendar(context.events);
+}

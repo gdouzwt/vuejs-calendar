@@ -1,5 +1,14 @@
 <template>
     <div>
+        <div id="header">
+            <div>
+                <img src="../assets/logo.png">
+                <h1>Vue.js Calendar</h1>
+            </div>
+            <div>
+                <current-month></current-month>
+            </div>
+        </div>
         <div id="day-bar">
             <div>Mon</div>
             <div>Tue</div>
@@ -14,22 +23,22 @@
                 <calendar-day v-for="day in week" :day="day"></calendar-day>
             </div>
         </div>
+        <event-form></event-form>
     </div>
 </template>
 <script>
-    import CalendarDay from './CalendarDay'
+    import CalendarDay from './CalendarDay';
+    import CurrentMonth from "./CurrentMonth";
+    import EventForm from "./EventForm";
 
     export default {
-        data() {
-            return {
-                month: 7,
-                year: 2020
-            };
-        },
-        created() {
-            console.log(this.$moment('2020-07-13').toDate());
-        },
         computed: {
+            month() {
+                return this.$store.state.currentMonth;
+            },
+            year() {
+                return this.$store.state.currentYear;
+            },
             days() {
 
                 // Generating all days in current month
@@ -80,7 +89,9 @@
             }
         },
         components: {
-            CalendarDay
+            CalendarDay,
+            CurrentMonth,
+            EventForm
         }
     }
 </script>

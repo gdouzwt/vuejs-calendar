@@ -25,6 +25,8 @@
     "express": "~4.17.1",
     "reload": "~3.1.0",
     "request": "~2.88.2",
+    "moment": "~2.27.0",
+    "moment-timezone": "~0.5.25",
     "serialize-javascript": "~4.0.0",
     "vue-server-renderer": "~2.6.11"
   },
@@ -35,8 +37,6 @@
     "babel-loader": "~8.1.0",
     "file-loader": "~6.0.0",
     "css-loader": "~3.6.0",
-    "moment": "~2.27.0",
-    "moment-timezone": "~0.5.25",
     "nodemon": "~2.0.4",
     "babel-plugin-es6-promise": "~1.1.1",
     "babel-plugin-transform-es2015-destructuring": "~6.23.0",
