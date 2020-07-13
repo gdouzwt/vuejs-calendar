@@ -4,7 +4,6 @@ var path = require('path');
 var webpack = require('webpack');
 var webpackMerge = require('webpack-merge');
 var miniCssExtractPlugin = require("mini-css-extract-plugin");
-var publicpath = "/assets";
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 var baseConfig = {
@@ -26,20 +25,20 @@ var baseConfig = {
                 }],
                 exclude: /node_modules/
             },
+            // {
+            //     test: /\.scss$/,
+            //     loader: 'style-loader!css-loader!sass-loader'
+            // },
+            // {
+            //     test: /\.css$/i,
+            //     use: [miniCssExtractPlugin.loader, 'css-loader'],
+            // },
             {
-                test: /\.scss$/,
-                loader: 'style-loader!css-loader!sass-loader'
-            },
-            {
-                test: /\.css$/i,
-                use: [miniCssExtractPlugin.loader, 'css-loader'],
-            },
-            {
-                test: /\.(png|jpg|gif|svg|ttf)$/,
+                test: /\.(png|jpg|gif|svg|ttf|woff2)$/,
                 loader: 'file-loader',
                 options: {
                     name: '[name].[ext]?[hash]',
-                    publicPath: process.env.CDN_URL && process.env.NODE_ENV === 'production' ? `${process.env.CDN_URL}/dist/` : '/dist/'
+                    // publicPath: ''
                 }
             },
             {
@@ -76,8 +75,7 @@ let targets = ['web', 'node'].map((target) => {
                 ? process.env.NODE_ENV === 'development'
                     ? [`./src/${target}.entry.js`, 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000']
                     : [`./src/${target}.entry.js`]
-                : [`./src/${target}.entry.js`]
-            ,
+                : [`./src/${target}.entry.js`],
         },
         output: {
             filename: `${target}.bundle.js`,
@@ -98,9 +96,24 @@ let targets = ['web', 'node'].map((target) => {
                 //     test: /\.scss$/,
                 //     loader: 'style-loader!css-loader!sass-loader'
                 // },
+                {
+                    test: /\.scss$/,
+                    use: [{
+                        loader: miniCssExtractPlugin.loader
+                    }, {
+                        loader: "css-loader"
+                    }, {
+                        loader: "sass-loader"
+                    }]
+                },
                 // {
-                //     test: /\.css$/i,
-                //     use: [miniCssExtractPlugin.loader, 'css-loader'],
+                //     test: /\.css$/,
+                //     use: [
+                //         {
+                //             loader: miniCssExtractPlugin.loader
+                //         },
+                //         'css-loader',
+                //     ],
                 // },
             ]
         },
@@ -108,12 +121,13 @@ let targets = ['web', 'node'].map((target) => {
             ? process.env.NODE_ENV === 'development'
                 ? [
                     new webpack.HotModuleReplacementPlugin(),
-                    new miniCssExtractPlugin()
+                    new miniCssExtractPlugin({
+                        filename: 'style.css'
+                    })
                 ]
                 : [
                     new webpack.DefinePlugin({'process.env': {NODE_ENV: '"production"'}}),
                     new webpack.LoaderOptionsPlugin({minimize: true}),
-                    new miniCssExtractPlugin(),
                     // we specify a custom UglifyJsPlugin here to get source maps in production
                     new UglifyJsPlugin({
                         cache: true,
@@ -125,6 +139,9 @@ let targets = ['web', 'node'].map((target) => {
                         },
                         sourceMap: true
                     }),
+                    new miniCssExtractPlugin({
+                        filename: 'style.css'
+                    })
                 ]
             : []
         ,
