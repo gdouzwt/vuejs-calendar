@@ -4,7 +4,9 @@ var path = require('path');
 var webpack = require('webpack');
 var webpackMerge = require('webpack-merge');
 var miniCssExtractPlugin = require("mini-css-extract-plugin");
+const LiveReloadPlugin = require('webpack-livereload-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
 var baseConfig = {
 
@@ -38,7 +40,7 @@ var baseConfig = {
                 loader: 'file-loader',
                 options: {
                     name: '[name].[ext]?[hash]',
-                    // publicPath: ''
+                    // publicPath: '/'
                 }
             },
             {
@@ -54,6 +56,7 @@ var baseConfig = {
         ]
     },
     resolve: {
+        extensions: ['.js', '.vue'],
         alias: {
             'vue$': 'vue/dist/vue.common.js',
         }
@@ -123,7 +126,9 @@ let targets = ['web', 'node'].map((target) => {
                     new webpack.HotModuleReplacementPlugin(),
                     new miniCssExtractPlugin({
                         filename: 'style.css'
-                    })
+                    }),
+                    new VueLoaderPlugin(),
+                    new LiveReloadPlugin()
                 ]
                 : [
                     new webpack.DefinePlugin({'process.env': {NODE_ENV: '"production"'}}),
@@ -141,7 +146,8 @@ let targets = ['web', 'node'].map((target) => {
                     }),
                     new miniCssExtractPlugin({
                         filename: 'style.css'
-                    })
+                    }),
+                    new VueLoaderPlugin(),
                 ]
             : []
         ,
