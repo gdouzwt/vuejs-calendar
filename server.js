@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === 'development') {
 
 server.listen(process.env.PORT, function () {
   console.log(`Example app listening on port ${process.env.PORT}!`);
-  if (process.env.NODE_ENV === 'development') {
-    require("opn")(`http://localhost:${process.env.PORT}`);
-  }
+  // if (process.env.NODE_ENV === 'development') {
+  //   require("open")(`http://localhost:${process.env.PORT}`);
+  // }
 });
